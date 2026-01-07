@@ -56,6 +56,60 @@ class Solutions:
                 f+=1
         return s+1
 
+    def leetcode80(self, nums: List[int]):
+        l = len(nums)
+        if l<3 :
+            return l;
+
+        f = 2
+        s = 2
+        # f s are 2 pointers starts at index 2, indicates we neglect first 2 elements as they always remain ;
+        # Always start the pointer at same position;
+        while(f < l):
+            if nums[f] == nums[s-2]:
+                # Decide if we meet a triple repetition;
+                f+=1;
+                # forward f pointer to find the first none repetition elements;
+            else:
+                nums[s] = nums[f]
+                # Over-write the current s pointer as we include the element;
+                f+=1
+                s+=1
+                # Forward f and s together
+        return s;
+
+    def leetcode169(self, nums: List[int]):
+        count = 0;
+        # count the number of current candidate
+        # if this goes zero then we induce that the number of current candidates isn't n/2
+        candidate = 0;
+        for n in nums:
+            if count == 0:
+                candidate = n
+            # change candidate
+            if candidate == n:
+                count += 1
+            else:
+                count -= 1
+
+        return candidate
+
+    def leetcode189(self, nums: List[int], k: int):
+
+        l = len(nums)
+        k %= l
+
+        nums[:] =  nums[l-k:] +  nums[:l-k]
+        # list[:a] for all first ath elements
+        # list[a:] for all elements after ath elements
+        # list[:-a] last a elements
+        # list[-a:] all but last k
+
+        return nums
+
+
+
+
 
 
 
@@ -69,7 +123,10 @@ if __name__ == "__main__":
     # sol.Merge_Sorted_Array(n1, 1, [], 0)
     # print(f"Test 1 Result: {n1}")
     # print(sol.Remove_Element([3,2,2,3],3))
-    print(sol.leetcode26([0,0,1,1,1,2,2,3,3,4]))
+    # print(sol.leetcode26([0,0,1,1,1,2,2,3,3,4]))
+    # print(sol.leetcode80([1,1,1,2,2,3]))
+    # print(sol.leetcode169([1,2,2,2,2,3]))
+    # print(sol.leetcode189([1,2,3,4,5,6,7,8,9],3))
 
 
 
