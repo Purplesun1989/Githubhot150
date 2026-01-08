@@ -107,7 +107,96 @@ class Solutions:
 
         return nums
 
+    def leetcode121(self, prices: List[int]):
+        if not prices:
+            return 0
 
+        min_price = float('inf')
+        max_profit = 0
+
+        for n in prices:
+
+            profit = n - min_price
+            if n < min_price:
+                min_price = n
+
+            if max_profit < profit:
+                max_profit = profit
+
+        return max_profit
+
+    def leetcode122_dp(self, prices: List[int]):
+        if not prices:
+            return 0
+
+        past_sold = 0
+        past_buyin = -prices[0]
+
+        for p in prices:
+            # 状态转移方程为：
+            # 每一天都有两种状态 即：
+            # 1.手中没有股票：按照今天的价格，把股票全部出掉了 或者 之前就已经清仓 今天没有补货
+            # 2.手中持有股票：按照今天的价格，购入了股票，或者 之前就有持仓 今天没有卖出
+            # 两种状态同时记录 都选取每种状态对应的两种情况中 盈利最多的计入状态方程
+            # 我们只需要维护 past_sold past_buyin即可
+
+            past_sold = max(past_sold, p + past_buyin)
+            past_buyin = max(past_buyin, past_sold - p)
+
+        return past_sold
+
+    def leetcode122_greedy(self, prices: List[int]):
+
+        if not prices:
+            return 0
+
+        r = 0
+        f = 1
+        l = len(prices)
+        balance = 0
+        while f < l:
+            if prices[f] > prices[r]:
+                balance += prices[f] - prices[r]
+            #     只要第二天比第一天的价格高 我们就在第一天买入 第二天卖出
+
+            f+=1
+            r+=1
+        return balance
+
+    def leetcode55_dp(self, nums: List[int]):
+        l = len(nums)
+        dp = [-1] * l
+        dp[0] = 1
+        # 转移方程为：
+        # 如果 当前位置的之前某一位可达到
+        # 并且 这一位可以跳到当前位置
+        # 那么 当前位置也可以达到
+        for i in range(1,l):
+            for j in range (i):
+                if dp[j] == 1 and nums[j] + j >= i:
+                    dp[i] = 1
+                    break
+        return dp[l-1]==1
+
+    def leetcode55_greedy(self, nums: List[int]):
+
+        l = len(nums)
+        flag = False
+        cover = nums[0]
+        # cover即当前位置的覆盖范围
+        i = 0;
+        while i <= cover:
+
+            if i+nums[i] > cover:
+                cover = i+nums[i]
+            #    如果当前位置的覆盖范围更大 我们更新覆盖范围
+            if cover >= l-1:
+                flag = True
+                # 如果 最后一位落在当前的覆盖范围中 我们认为最后一位可以达到
+                break
+            i+=1
+
+        return flag
 
 
 
@@ -127,6 +216,11 @@ if __name__ == "__main__":
     # print(sol.leetcode80([1,1,1,2,2,3]))
     # print(sol.leetcode169([1,2,2,2,2,3]))
     # print(sol.leetcode189([1,2,3,4,5,6,7,8,9],3))
+    # print(sol.leetcode121([7,1,5,3,6,4]))
+    # print(sol.leetcode122_greedy([5,4,3,2,1]))
+    # print(sol.leetcode122_dp([7,1,5,3,6,4]))
+    # print(sol.leetcode55_dp([3,2,1,0,4]))
+    # print(sol.leetcode55_greedy([0,1]))
 
 
 
