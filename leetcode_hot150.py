@@ -198,6 +198,92 @@ class Solutions:
 
         return flag
 
+    def leetcode45_dp(self, nums: List[int]):
+        l = len(nums)
+        leaps = [float('inf')] * l
+        leaps[0] = 0
+        for i in range(l):
+            for j in range(1,nums[i]+1):
+                if i+j >= l:
+                    continue
+                leaps[i+j] = min(leaps[i]+1,leaps[i+j])
+        #       类似Dj算法 将本节点可以到到达的所有节点的权值（即最小跳跃步）标记为
+        #       min(本点权值+1，该节点权值)
+        return leaps[-1]
+
+    def leetcode45_greedy(self, nums: List[int]):
+        l = len(nums)
+        if l <= 1:
+            return 0
+
+        current_end  = 0
+        farthest_end = 0
+        jump = 0
+
+        for i in range(l):
+            if current_end == l - 1:
+                break
+            #     如果当前的覆盖范围达到最后一个节点，即停止
+            farthest_end = max(i+nums[i], farthest_end)
+            #     选取一个最大的最远覆盖范围
+            if i == current_end:
+                jump+=1
+                current_end = farthest_end
+        #         每更新一次当前的边界 即选择最远覆盖范围 即跳跃一次
+
+        return jump
+
+    def leetcode247_sort(self, citations: List[int]):
+
+        citations.sort()
+        h = 0
+        p = len(citations)-1
+        while p >= 0:
+            if citations[p] > h:
+                h+=1
+                p-=1
+            else:
+                break
+        return h
+
+    def leetcode247_hashtable(self, citations: List[int]):
+        l = len(citations)
+        hashtable = [0]*(l+1)
+        for c in citations:
+            if c >= l:
+                hashtable[l]+=1
+            else:
+                hashtable[c]+=1
+        total_paper = 0;
+
+        while l >= 0:
+            total_paper += hashtable[l]
+            if total_paper >= l:
+                break
+            l-=1
+        return l
+    def leetcode238(self, nums: List[int]):
+        l = len(nums)
+        prefix = [nums[0]]*l
+        surfix = [nums[-1]]*l
+        res = [0]*l
+        for i in range(2,l):
+            prefix[i] = nums[i-1] * prefix[i-1]
+
+        for i in range(l-3,-1,-1):
+            surfix[i] = nums[i+1]* surfix[i+1]
+
+        for i in range(1,l-1):
+            res[i]=prefix[i]*surfix[i]
+
+        res[0] = surfix[0]
+        res[-1] = prefix[-1]
+        return res
+
+
+
+
+
 
 
 
@@ -221,6 +307,11 @@ if __name__ == "__main__":
     # print(sol.leetcode122_dp([7,1,5,3,6,4]))
     # print(sol.leetcode55_dp([3,2,1,0,4]))
     # print(sol.leetcode55_greedy([0,1]))
+    # print(sol.leetcode45_dp([2,3,1,1,4]))
+    # print(sol.leetcode45_greedy([2, 3, 1, 1, 4]))
+    # print(sol.leetcode247_sort([3,0,6,1,5]))
+    # print(sol.leetcode247_hashtable([1,3,1]))
+    print(sol.leetcode238([-1,1,0,-3,3]))
 
 
 
