@@ -198,6 +198,16 @@ class Solutions:
 
         return flag
 
+    def leetcode134(self, gas: List[int], cost: List[int]):
+        for i in range(len(gas)):
+            gas[i] -= cost[i]
+
+        current_sum = 0;
+        for i in range(len(gas)):
+            current_sum += gas[i]
+            if current_sum < 0:
+                break
+        return 0;
 
 
 
@@ -221,6 +231,7 @@ if __name__ == "__main__":
     # print(sol.leetcode122_dp([7,1,5,3,6,4]))
     # print(sol.leetcode55_dp([3,2,1,0,4]))
     # print(sol.leetcode55_greedy([0,1]))
+
 
 
 
