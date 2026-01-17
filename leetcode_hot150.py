@@ -338,17 +338,25 @@ class Solutions:
         return count
 
     def leetcode14(self, strs: List[str]):
-        count = 0
-        l = 201
+        if not strs:
+            return ""
+
+        # 1. 找出最短长度 (为了防止 i 越界)
+        min_len = 201
         for s in strs:
-            if len(s)<l:
-                l = len(s);
-        for i in range(l):
-            for j in range(len(s)-1):
-                if s[j][i] !=s[j+1][i]:
-                    break
-                count+=1
-        return count
+            if len(s) < min_len:
+                min_len = len(s)
+
+        # 2. 外层循环：扫描第 i 个字符
+        for i in range(min_len):
+            # 内层循环：比较列表中相邻的两个字符串
+            for j in range(len(strs) - 1):  # 注意：这里是 len(strs)
+                if strs[j][i] != strs[j + 1][i]:
+                    # 一旦发现不匹配，立刻截取并返回前面的部分
+                    return strs[0][:i]
+
+                    # 3. 如果循环全部跑完，说明最短的那个字符串就是公共前缀
+        return len(strs[0][:min_len])
 
 
 
@@ -375,7 +383,6 @@ if __name__ == "__main__":
     # print(sol.leetcode42([4,2,0,3,2,5]))
     # print(sol.leetcode42_rearrange([4,2,0,3,2,5]))
     # print(sol.leetcode12(58))
-
     print(sol.leetcode14(["flower","flow","flight"]))
 
 
