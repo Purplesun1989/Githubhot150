@@ -199,16 +199,107 @@ class Solutions:
         return flag
 
     def leetcode134(self, gas: List[int], cost: List[int]):
-        for i in range(len(gas)):
-            gas[i] -= cost[i]
 
-        current_sum = 0;
-        for i in range(len(gas)):
-            current_sum += gas[i]
-            if current_sum < 0:
-                break
-        return 0;
+        cur_sum = 0
+        start_at = 0
 
+        if sum(gas) < sum(cost):
+            return -1
+        #如果整体来讲是加油大于消耗油，那么就一定存在一个起始点 可以anticlock遍历所有的点一圈
+
+        for i in range(len(gas)):
+            surplus = gas[i] - cost[i]
+            #计算在本点加油后 出发下一个点 油箱的盈余
+            cur_sum += surplus
+            #如果油箱为空甚至为负，那么就认为 从目前的起始点 是无法到达本点的
+            if cur_sum < 0:
+                start_at = i + 1
+                cur_sum = 0
+                #所以 重置当前的start_at 为当前节点+1
+
+        return start_at
+
+    def leetcode135(self, ratings: List[int]):
+        res = [1]*len(ratings)
+        l = len(ratings)
+        for i in range(1,l):
+            if ratings[i] > ratings[i-1]:
+                # 从左往右遍历，如果next比当前大，那么就给下一个增1
+                res[i] = res[i-1] + 1
+
+        for i in range(l-1,0,-1):
+            if ratings[i-1] > ratings[i]:
+                # 从右往左遍历，如果下一个比当前的大，那么就取 当前自增1 和 下一个 中较大的哪个
+                res[i-1] = max(res[i]+1,res[i-1])
+
+
+        return sum(res)
+
+    def leetcode13(self, s: str):
+
+        my_hash = {
+            "I": 1,
+            "V": 5,
+            "X": 10,
+            "L": 50,
+            "C": 100,
+            "D": 500,
+            "M": 1000
+        }
+        res  = 0
+        for i in range(len(s)-1) :
+            if(my_hash[s[i]] < my_hash[s[i+1]]):
+                res -= my_hash[s[i]]
+
+            else:
+                res += my_hash[s[i]]
+
+        res += my_hash[s[-1]]
+
+        return res
+
+    def leetcode42(self, height: List[int]):
+        l = len(height)
+        r_max = [0]*l
+        l_max = [0] * l
+        # 利用前缀法的思路,lmax记录当前index之前最大的数,rmax记录当前index之后最大的数
+
+        res = 0
+        for i in range(1,l):
+            l_max[i] = max(height[i-1],l_max[i-1])
+        #     查找当前下标之前最大的数
+
+        for i in range(l-2,-1,-1):
+            r_max[i] = max(height[i+1],r_max[i+1])
+        #     查找当前下标之后最大的数
+
+        for i in range(l):
+            diff = min(l_max[i],r_max[i]) - height[i]
+            # 当前下标上能存储的雨水,取决于左最大和右最大中比较小的那一个与当前下标高度做diff
+            if diff > 0:
+                res += diff
+        return res
+
+    def leetcode42_rearrange(self, height: List[int]):
+        # 这个绝妙的解法利用了两次加法的交换率 即 (a+b) + (c+d) = a+d + c + b
+        l = len(height)
+        r_max = height[-1]
+        l_max = height[0]
+        sum = 0
+        for i in range(0,l):
+            # 每个index可以积蓄的雨水,等同于左边最大与右边最大中较小者与当前index的高度做差
+            # 整个数组可以积蓄的雨水,等同于每个点积蓄的雨水之和
+            # 也就是 total = sum(Wi) = sum(min(lmax,rmax)-height[i])
+            # 由数学定义 min(lmax,rmax) = lmax + rmax -max(lmax,rmax)
+            # 那么 total = sum(lmax + rmax -max(lmax,rmax)-height[i])
+            l_max = max(l_max,height[i])
+            r_max = max(r_max,height[l-1-i])
+            sum += r_max + l_max -height[i]
+            # sum(lmax + rmax -height[i]) 中lmax和rmax可以由加法交换律 任意匹配 也就是
+            # index为1 的lmax 可以与 index 为len-1-1的rmax相结合 这样的好处是可以用一个正向循环把lmax和 rmax同时维护
+        return sum - l* r_max
+            # max(lmax,rmax) 一定等于全数组最大值,即gmax,借此 我们可以使用加法交换律提出每一个点上的max(lmax,rmax) 为gmax
+            # 即 total = sum(lmax + rmax -height[i]) - len*gmax
 
 
 
@@ -231,6 +322,11 @@ if __name__ == "__main__":
     # print(sol.leetcode122_dp([7,1,5,3,6,4]))
     # print(sol.leetcode55_dp([3,2,1,0,4]))
     # print(sol.leetcode55_greedy([0,1]))
+    # print(sol.leetcode134([1,2,3,4,5],[3,4,5,1,2]))
+    # print(sol.leetcode135([1,3,2,2,1]))
+    # print(sol.leetcode13("MCMXCIV"))
+    # print(sol.leetcode42([4,2,0,3,2,5]))
+    # print(sol.leetcode42_rearrange([4,2,0,3,2,5]))
 
 
 
