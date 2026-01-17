@@ -301,7 +301,33 @@ class Solutions:
             # max(lmax,rmax) 一定等于全数组最大值,即gmax,借此 我们可以使用加法交换律提出每一个点上的max(lmax,rmax) 为gmax
             # 即 total = sum(lmax + rmax -height[i]) - len*gmax
 
+    def leetcode12(self, num: int):
+        roman_map = {
+            # 个位 (Ones)
+            1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V',
+            6: 'VI', 7: 'VII', 8: 'VIII', 9: 'IX',0:"",
 
+            # 您跳过了十位 (10-90)，为了完整性我补在这里，如果不需要可以删除
+            10: 'X', 20: 'XX', 30: 'XXX', 40: 'XL', 50: 'L',
+            60: 'LX', 70: 'LXX', 80: 'LXXX', 90: 'XC',
+
+            # 百位 (Hundreds)
+            100: 'C', 200: 'CC', 300: 'CCC', 400: 'CD', 500: 'D',
+            600: 'DC', 700: 'DCC', 800: 'DCCC', 900: 'CM',
+
+            # 千位 (Thousands) - 标准写法通常截止于 3000 (MMM)
+            1000: 'M',
+            2000: 'MM',
+            3000: 'MMM',
+        }
+        res = ""
+        dvd = 1000
+        while dvd >= 1:
+            res += roman_map[(num//dvd)*dvd]
+            num %= dvd
+            dvd /= 10
+
+        return res
 
 
 
@@ -309,8 +335,7 @@ class Solutions:
 
 if __name__ == "__main__":
     sol = Solutions()
-    # n1 = [1]
-    # sol.Merge_Sorted_Array(n1, 1, [], 0)
+    # sol.Merge_Sorted_Array([1] 1, [], 0)
     # print(f"Test 1 Result: {n1}")
     # print(sol.Remove_Element([3,2,2,3],3))
     # print(sol.leetcode26([0,0,1,1,1,2,2,3,3,4]))
@@ -327,6 +352,7 @@ if __name__ == "__main__":
     # print(sol.leetcode13("MCMXCIV"))
     # print(sol.leetcode42([4,2,0,3,2,5]))
     # print(sol.leetcode42_rearrange([4,2,0,3,2,5]))
+    print(sol.leetcode12(58))
 
 
 
