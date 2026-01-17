@@ -328,7 +328,27 @@ class Solutions:
             dvd /= 10
 
         return res
+    def leetcode58(self, string: str) -> int:
+        count = 0
+        string=string.strip();
+        for i in range(len(string)-1,-1,-1):
+            if string[i] == ' ':
+                break
+            count+=1
+        return count
 
+    def leetcode14(self, strs: List[str]):
+        count = 0
+        l = 201
+        for s in strs:
+            if len(s)<l:
+                l = len(s);
+        for i in range(l):
+            for j in range(len(s)-1):
+                if s[j][i] !=s[j+1][i]:
+                    break
+                count+=1
+        return count
 
 
 
@@ -355,6 +375,9 @@ if __name__ == "__main__":
     # print(sol.leetcode42([4,2,0,3,2,5]))
     # print(sol.leetcode42_rearrange([4,2,0,3,2,5]))
     # print(sol.leetcode12(58))
+
+    print(sol.leetcode14(["flower","flow","flight"]))
+
 
 
 
