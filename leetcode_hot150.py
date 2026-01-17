@@ -339,9 +339,15 @@ class Solutions:
 
     def leetcode14(self, strs: List[str]):
         count = 0
-        # for s in strs:
-        #
-        print(strs[1][3])
+        l = 201
+        for s in strs:
+            if len(s)<l:
+                l = len(s);
+        for i in range(l):
+            for j in range(len(s)-1):
+                if s[j][i] !=s[j+1][i]:
+                    break
+                count+=1
         return count
 
 
