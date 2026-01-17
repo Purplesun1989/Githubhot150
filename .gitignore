@@ -2,3 +2,4 @@
 __pycache__/    # Python compiled files
 .DS_Store       # macOS system files (if you use a Mac)
 venv/           # Virtual environments
+test.py         # test file

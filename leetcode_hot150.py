@@ -333,6 +333,8 @@ class Solutions:
 
 
 
+
+
 if __name__ == "__main__":
     sol = Solutions()
     # sol.Merge_Sorted_Array([1] 1, [], 0)
@@ -352,7 +354,7 @@ if __name__ == "__main__":
     # print(sol.leetcode13("MCMXCIV"))
     # print(sol.leetcode42([4,2,0,3,2,5]))
     # print(sol.leetcode42_rearrange([4,2,0,3,2,5]))
-    print(sol.leetcode12(58))
+    # print(sol.leetcode12(58))
 
 
 
