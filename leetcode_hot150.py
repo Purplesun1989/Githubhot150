@@ -330,7 +330,7 @@ class Solutions:
         return res
     def leetcode58(self, string: str) -> int:
         count = 0
-        string=string.strip();
+        string=string.strip()
         for i in range(len(string)-1,-1,-1):
             if string[i] == ' ':
                 break
@@ -358,6 +358,53 @@ class Solutions:
                     # 3. 如果循环全部跑完，说明最短的那个字符串就是公共前缀
         return len(strs[0][:min_len])
 
+    def leetcode151(self, s: str):
+
+        words = s.split()
+        words.reverse()
+
+
+        return " ".join(words)
+
+    def leetcode6(self, s: str, numRows: int):
+        if numRows == 1:
+            return s
+        step = -1
+        cur_row = 0
+        res = [""] * numRows
+        for c in s:
+
+            res[cur_row] += c
+            if cur_row == numRows-1 or cur_row == 0:
+                # 如果触底或者碰到天花板 步长反转
+                step = -step
+
+
+            cur_row += step
+
+        return "".join(res)
+
+    def leetcode28(self, haystack: str, needle: str):
+        l = 0
+        h = len(haystack)
+        n = len(needle)
+        while l <= h-n :
+            # 如果一直到h-n都无法匹配 那么后面的都不用看，因为长度都不够，肯定无法匹配
+            if haystack[l] == needle[0]:
+                # 当第一个字符匹配上之后在进行后续的匹配
+                f = 0
+                # f必须要在内循环外面更新
+                while True:
+                    if haystack[l+f] != needle[f]:
+                        break
+                    if f == len(needle)-1:
+                        return l
+                    f += 1
+            l+=1
+
+        return -1
+
+
 
 
 
@@ -383,7 +430,10 @@ if __name__ == "__main__":
     # print(sol.leetcode42([4,2,0,3,2,5]))
     # print(sol.leetcode42_rearrange([4,2,0,3,2,5]))
     # print(sol.leetcode12(58))
-    print(sol.leetcode14(["flower","flow","flight"]))
+    # print(sol.leetcode14(["flower","flow","flight"]))
+    # print(sol.leetcode151("a good   example"))
+    # print(sol.leetcode6("PAYPALISHIRING",4))
+    # print(sol.leetcode28("aaabaaabbbabaa","babb"))
 
 
 
